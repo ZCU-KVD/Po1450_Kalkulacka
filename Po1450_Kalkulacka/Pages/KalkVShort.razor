@@ -13,8 +13,20 @@
 	<button @onclick="Vydel" type="button" class="btn btn-success">Podíl (/)</button>
 </div>
 <label>Výsledek: <input @bind="vysledek" readonly /></label>
+<hr />
+<label> <input type="checkbox" @bind-value="kontrolaPreteceni"/> Kontrola přetečení</label>
+
+@if (chyba != string.Empty)
+{
+	<div class="alert alert-danger">
+		<strong>Danger!</strong> @chyba
+	</div>
+}
+
 
 @code {
+	private bool kontrolaPreteceni;
+	private string chyba="";
 
 	/// <summary>
 	/// Proměnná pro první číslo
@@ -36,7 +48,28 @@
 	/// </summary>
 	private void Secti()
 	{
-		vysledek = (short)(cislo1 + cislo2);
+		chyba = "";
+		if (kontrolaPreteceni)
+		{
+			try
+			{
+				checked
+				{
+					vysledek = (short)(cislo1 + cislo2);
+
+				}
+			}
+			catch (Exception)
+			{
+				chyba = "Došlo k přetečení";
+				
+			}
+					
+		}
+		else
+		{
+			vysledek = (short)(cislo1 + cislo2);
+		}
 	}
 
 	/// <summary>
